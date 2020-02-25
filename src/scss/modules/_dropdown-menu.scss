@@ -30,6 +30,11 @@ $max-height: $vs-dropdown-max-height;
   text-align: left;
   list-style: none;
   background: $bg-color;
+
+  > div {
+    display: inline-flex;
+    flex-direction: column;
+  }
 }
 
 .vs__no-options {
