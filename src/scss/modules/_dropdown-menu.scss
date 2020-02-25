@@ -32,6 +32,7 @@ $max-height: $vs-dropdown-max-height;
   background: $bg-color;
 
   > div {
+    min-width: 100%;
     display: inline-flex;
     flex-direction: column;
   }
