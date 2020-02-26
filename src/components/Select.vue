@@ -1,9 +1,9 @@
 <style lang="scss">
-@import "../scss/vue-select.scss";
+@import '../scss/vue-select.scss';
 </style>
 
 <template>
-  <div :dir="dir" class="v-select" :class="stateClasses">
+  <div :dir="dir" ref="select" class="v-select" :class="stateClasses">
     <div ref="toggle" @mousedown.prevent="toggleDropdown" class="vs__dropdown-toggle">
       <div class="vs__selected-options" ref="selectedOptions">
         <slot
@@ -86,7 +86,11 @@
             v-for="(option, index) in filteredOptions"
             :key="getOptionKey(option)"
             class="vs__dropdown-option"
-            :class="{ 'vs__dropdown-option--selected': isOptionSelected(option), 'vs__dropdown-option--highlight': index === typeAheadPointer, 'vs__dropdown-option--disabled': !selectable(option) }"
+            :class="{
+              'vs__dropdown-option--selected': isOptionSelected(option),
+              'vs__dropdown-option--highlight': index === typeAheadPointer,
+              'vs__dropdown-option--disabled': !selectable(option)
+            }"
             @mouseover="selectable(option) ? typeAheadPointer = index : null"
             @mousedown.prevent.stop="selectable(option) ? select(option) : null"
           >
@@ -102,10 +106,10 @@
 </template>
 
 <script type="text/babel">
-import pointerScroll from "../mixins/pointerScroll";
-import typeAheadPointer from "../mixins/typeAheadPointer";
-import ajax from "../mixins/ajax";
-import childComponents from "./childComponents";
+import pointerScroll from '../mixins/pointerScroll';
+import typeAheadPointer from '../mixins/typeAheadPointer';
+import ajax from '../mixins/ajax';
+import childComponents from './childComponents';
 
 /**
  * @name VueSelect
@@ -133,7 +137,7 @@ export default {
      */
     components: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
 
     /**
@@ -147,7 +151,7 @@ export default {
       type: Array,
       default() {
         return [];
-      }
+      },
     },
 
     /**
@@ -156,7 +160,7 @@ export default {
      */
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     /**
@@ -165,7 +169,7 @@ export default {
      */
     clearable: {
       type: Boolean,
-      default: true
+      default: true,
     },
 
     /**
@@ -174,7 +178,7 @@ export default {
      */
     searchable: {
       type: Boolean,
-      default: true
+      default: true,
     },
 
     /**
@@ -183,7 +187,7 @@ export default {
      */
     multiple: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     /**
@@ -192,7 +196,7 @@ export default {
      */
     placeholder: {
       type: String,
-      default: ""
+      default: '',
     },
 
     /**
@@ -201,7 +205,7 @@ export default {
      */
     transition: {
       type: String,
-      default: "vs__fade"
+      default: 'vs__fade',
     },
 
     /**
@@ -210,7 +214,7 @@ export default {
      */
     clearSearchOnSelect: {
       type: Boolean,
-      default: true
+      default: true,
     },
 
     /**
@@ -220,7 +224,7 @@ export default {
      */
     closeOnSelect: {
       type: Boolean,
-      default: true
+      default: true,
     },
 
     /**
@@ -230,7 +234,7 @@ export default {
      */
     label: {
       type: String,
-      default: "label"
+      default: 'label',
     },
 
     /**
@@ -240,7 +244,7 @@ export default {
      */
     autocomplete: {
       type: String,
-      default: "off"
+      default: 'off',
     },
 
     /**
@@ -252,7 +256,7 @@ export default {
      */
     reduce: {
       type: Function,
-      default: option => option
+      default: option => option,
     },
 
     /**
@@ -266,7 +270,7 @@ export default {
      */
     selectable: {
       type: Function,
-      default: option => true
+      default: option => true,
     },
 
     /**
@@ -285,18 +289,18 @@ export default {
     getOptionLabel: {
       type: Function,
       default(option) {
-        if (typeof option === "object") {
+        if (typeof option === 'object') {
           if (!option.hasOwnProperty(this.label)) {
             return console.warn(
               `[vue-select warn]: Label key "option.${this.label}" does not` +
                 ` exist in options object ${JSON.stringify(option)}.\n` +
-                "https://vue-select.org/api/props.html#getoptionlabel"
+                'https://vue-select.org/api/props.html#getoptionlabel'
             );
           }
           return option[this.label];
         }
         return option;
-      }
+      },
     },
 
     /**
@@ -314,7 +318,7 @@ export default {
     getOptionKey: {
       type: Function,
       default(option) {
-        if (typeof option === "object" && option.id) {
+        if (typeof option === 'object' && option.id) {
           return option.id;
         } else {
           try {
@@ -324,11 +328,11 @@ export default {
               `[vue-select warn]: Could not stringify option ` +
                 `to generate unique key. Please provide'getOptionKey' prop ` +
                 `to return a unique key for each option.\n` +
-                "https://vue-select.org/api/props.html#getoptionkey"
+                'https://vue-select.org/api/props.html#getoptionkey'
             );
           }
         }
-      }
+      },
     },
 
     /**
@@ -341,7 +345,7 @@ export default {
         if (this.selectOnTab && !this.isComposing) {
           this.typeAheadSelect();
         }
-      }
+      },
     },
 
     /**
@@ -350,7 +354,7 @@ export default {
      */
     taggable: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     /**
@@ -359,7 +363,7 @@ export default {
      */
     tabindex: {
       type: Number,
-      default: null
+      default: null,
     },
 
     /**
@@ -369,7 +373,7 @@ export default {
      */
     pushTags: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     /**
@@ -380,7 +384,7 @@ export default {
      */
     filterable: {
       type: Boolean,
-      default: true
+      default: true,
     },
 
     /**
@@ -396,8 +400,8 @@ export default {
     filterBy: {
       type: Function,
       default(option, label, search) {
-        return (label || "").toLowerCase().indexOf(search.toLowerCase()) > -1;
-      }
+        return (label || '').toLowerCase().indexOf(search.toLowerCase()) > -1;
+      },
     },
 
     /**
@@ -416,12 +420,12 @@ export default {
       default(options, search) {
         return options.filter(option => {
           let label = this.getOptionLabel(option);
-          if (typeof label === "number") {
+          if (typeof label === 'number') {
             label = label.toString();
           }
           return this.filterBy(option, label, search);
         });
-      }
+      },
     },
 
     /**
@@ -431,10 +435,10 @@ export default {
     createOption: {
       type: Function,
       default(option) {
-        return typeof this.optionList[0] === "object"
+        return typeof this.optionList[0] === 'object'
           ? { [this.label]: option }
           : option;
-      }
+      },
     },
 
     /**
@@ -451,7 +455,7 @@ export default {
      */
     resetOnOptionsChange: {
       default: false,
-      validator: value => ["function", "boolean"].includes(typeof value)
+      validator: value => ['function', 'boolean'].includes(typeof value),
     },
 
     /**
@@ -462,7 +466,7 @@ export default {
       type: Function,
       default: function({ clearSearchOnSelect, multiple }) {
         return clearSearchOnSelect && !multiple;
-      }
+      },
     },
 
     /**
@@ -471,7 +475,7 @@ export default {
      */
     noDrop: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     /**
@@ -480,7 +484,7 @@ export default {
      * @default {null}
      */
     inputId: {
-      type: String
+      type: String,
     },
 
     /**
@@ -491,7 +495,7 @@ export default {
      */
     dir: {
       type: String,
-      default: "auto"
+      default: 'auto',
     },
 
     /**
@@ -501,7 +505,7 @@ export default {
      */
     selectOnTab: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     /**
@@ -510,7 +514,7 @@ export default {
      */
     selectOnKeyCodes: {
       type: Array,
-      default: () => [13]
+      default: () => [13],
     },
 
     /**
@@ -524,7 +528,7 @@ export default {
      */
     searchInputQuerySelector: {
       type: String,
-      default: "[type=search]"
+      default: '[type=search]',
     },
 
     /**
@@ -539,17 +543,17 @@ export default {
        * @param vm {VueSelect}
        * @return {Object}
        */
-      default: (map, vm) => map
-    }
+      default: (map, vm) => map,
+    },
   },
 
   data() {
     return {
-      search: "",
+      search: '',
       open: false,
       isComposing: false,
       pushedTags: [],
-      _value: [] // Internal value managed by Vue Select if no `value` prop is passed
+      _value: [], // Internal value managed by Vue Select if no `value` prop is passed
     };
   },
 
@@ -563,7 +567,7 @@ export default {
      */
     options(newOptions, oldOptions) {
       let shouldReset = () =>
-        typeof this.resetOnOptionsChange === "function"
+        typeof this.resetOnOptionsChange === 'function'
           ? this.resetOnOptionsChange(
               newOptions,
               oldOptions,
@@ -598,17 +602,17 @@ export default {
      */
     multiple() {
       this.clearSelection();
-    }
+    },
   },
 
   created() {
     this.mutableLoading = this.loading;
 
-    if (typeof this.value !== "undefined" && this.isTrackingValues) {
+    if (typeof this.value !== 'undefined' && this.isTrackingValues) {
       this.setInternalValueFromOptions(this.value);
     }
 
-    this.$on("option:created", this.maybePushTag);
+    this.$on('option:created', this.maybePushTag);
   },
 
   methods: {
@@ -637,7 +641,7 @@ export default {
       if (!this.isOptionSelected(option)) {
         if (this.taggable && !this.optionExists(option)) {
           option = this.createOption(option);
-          this.$emit("option:created", option);
+          this.$emit('option:created', option);
         }
         if (this.multiple) {
           option = this.selectedValue.concat(option);
@@ -681,7 +685,7 @@ export default {
       }
 
       if (this.clearSearchOnSelect) {
-        this.search = "";
+        this.search = '';
       }
     },
 
@@ -707,7 +711,7 @@ export default {
         }
       }
 
-      this.$emit("input", value);
+      this.$emit('input', value);
     },
 
     /**
@@ -715,12 +719,12 @@ export default {
      * @param  {Event} e
      * @return {void}
      */
-    toggleDropdown({ target }) {
+    async toggleDropdown({ target }) {
       //  don't react to click on deselect/clear buttons,
       //  they dropdown state will be set in their click handlers
       const ignoredButtons = [
-        ...(this.$refs["deselectButtons"] || []),
-        ...([this.$refs["clearButton"]] || [])
+        ...(this.$refs['deselectButtons'] || []),
+        ...([this.$refs['clearButton']] || []),
       ];
 
       if (ignoredButtons.some(ref => ref.contains(target) || ref === target)) {
@@ -732,6 +736,19 @@ export default {
       } else if (!this.disabled) {
         this.open = true;
         this.searchEl.focus();
+        await this.$nextTick();
+
+        const selectedOption = this.$refs.select.querySelector(
+          '.vs__dropdown-option--selected'
+        );
+        if (selectedOption) {
+          const dropdownPanel = this.$refs.select.querySelector(
+            '.vs__dropdown-menu'
+          );
+          const panelRect = dropdownPanel.getBoundingClientRect();
+          const rect = selectedOption.getBoundingClientRect();
+          dropdownPanel.scrollTop += rect.top - panelRect.top;
+        }
       }
     },
 
@@ -754,7 +771,7 @@ export default {
      * @returns {boolean}
      */
     optionComparator(value, option) {
-      if (typeof value !== "object" && typeof option !== "object") {
+      if (typeof value !== 'object' && typeof option !== 'object') {
         // Comparing primitives
         if (value === option) {
           return true;
@@ -802,7 +819,7 @@ export default {
      */
     closeSearchOptions() {
       this.open = false;
-      this.$emit("search:blur");
+      this.$emit('search:blur');
     },
 
     /**
@@ -815,7 +832,7 @@ export default {
         let value = null;
         if (this.multiple) {
           value = [
-            ...this.selectedValue.slice(0, this.selectedValue.length - 1)
+            ...this.selectedValue.slice(0, this.selectedValue.length - 1),
           ];
         }
         this.updateValue(value);
@@ -831,7 +848,7 @@ export default {
      */
     optionExists(option) {
       return this.optionList.some(opt => {
-        if (typeof opt === "object" && this.getOptionLabel(opt) === option) {
+        if (typeof opt === 'object' && this.getOptionLabel(opt) === option) {
           return true;
         } else if (opt === option) {
           return true;
@@ -847,7 +864,7 @@ export default {
      * @return {*}
      */
     normalizeOptionForSlot(option) {
-      return typeof option === "object" ? option : { [this.label]: option };
+      return typeof option === 'object' ? option : { [this.label]: option };
     },
 
     /**
@@ -872,7 +889,7 @@ export default {
       if (!this.search.length) {
         this.searchEl.blur();
       } else {
-        this.search = "";
+        this.search = '';
       }
     },
 
@@ -887,7 +904,7 @@ export default {
       } else {
         const { clearSearchOnSelect, multiple } = this;
         if (this.clearSearchOnBlur({ clearSearchOnSelect, multiple })) {
-          this.search = "";
+          this.search = '';
         }
         this.closeSearchOptions();
         return;
@@ -906,7 +923,7 @@ export default {
      */
     onSearchFocus() {
       this.open = true;
-      this.$emit("search:focus");
+      this.$emit('search:focus');
     },
 
     /**
@@ -957,7 +974,7 @@ export default {
         40: e => {
           e.preventDefault();
           return this.typeAheadDown();
-        }
+        },
       };
 
       this.selectOnKeyCodes.forEach(
@@ -966,10 +983,10 @@ export default {
 
       const handlers = this.mapKeydown(defaults, this);
 
-      if (typeof handlers[e.keyCode] === "function") {
+      if (typeof handlers[e.keyCode] === 'function') {
         return handlers[e.keyCode](e);
       }
-    }
+    },
   },
 
   computed: {
@@ -980,8 +997,8 @@ export default {
      */
     isTrackingValues() {
       return (
-        typeof this.value === "undefined" ||
-        this.$options.propsData.hasOwnProperty("reduce")
+        typeof this.value === 'undefined' ||
+        this.$options.propsData.hasOwnProperty('reduce')
       );
     },
 
@@ -1020,7 +1037,7 @@ export default {
      * @returns {HTMLInputElement}
      */
     searchEl() {
-      return !!this.$scopedSlots["search"]
+      return !!this.$scopedSlots['search']
         ? this.$refs.selectedOptions.querySelector(
             this.searchInputQuerySelector
           )
@@ -1040,13 +1057,13 @@ export default {
             tabindex: this.tabindex,
             readonly: !this.searchable,
             id: this.inputId,
-            "aria-expanded": this.dropdownOpen,
-            "aria-label": "Search for option",
-            ref: "search",
-            role: "combobox",
-            type: "search",
+            'aria-expanded': this.dropdownOpen,
+            'aria-label': 'Search for option',
+            ref: 'search',
+            role: 'combobox',
+            type: 'search',
             autocomplete: this.autocomplete,
-            value: this.search
+            value: this.search,
           },
           events: {
             compositionstart: () => (this.isComposing = true),
@@ -1054,19 +1071,19 @@ export default {
             keydown: this.onSearchKeyDown,
             blur: this.onSearchBlur,
             focus: this.onSearchFocus,
-            input: e => (this.search = e.target.value)
-          }
+            input: e => (this.search = e.target.value),
+          },
         },
         spinner: {
-          loading: this.mutableLoading
+          loading: this.mutableLoading,
         },
         openIndicator: {
           attributes: {
-            ref: "openIndicator",
-            role: "presentation",
-            class: "vs__open-indicator"
-          }
-        }
+            ref: 'openIndicator',
+            role: 'presentation',
+            class: 'vs__open-indicator',
+          },
+        },
       };
     },
 
@@ -1080,7 +1097,7 @@ export default {
     childComponents() {
       return {
         ...childComponents,
-        ...this.components
+        ...this.components,
       };
     },
 
@@ -1090,13 +1107,13 @@ export default {
      */
     stateClasses() {
       return {
-        "vs--open": this.dropdownOpen,
-        "vs--single": !this.multiple,
-        "vs--searching": this.searching && !this.noDrop,
-        "vs--searchable": this.searchable && !this.noDrop,
-        "vs--unsearchable": !this.searchable,
-        "vs--loading": this.mutableLoading,
-        "vs--disabled": this.disabled
+        'vs--open': this.dropdownOpen,
+        'vs--single': !this.multiple,
+        'vs--searching': this.searching && !this.noDrop,
+        'vs--searchable': this.searchable && !this.noDrop,
+        'vs--unsearchable': !this.searchable,
+        'vs--loading': this.mutableLoading,
+        'vs--disabled': this.disabled,
       };
     },
 
@@ -1173,7 +1190,7 @@ export default {
       return (
         !this.multiple && this.clearable && !this.open && !this.isValueEmpty
       );
-    }
-  }
+    },
+  },
 };
 </script>
