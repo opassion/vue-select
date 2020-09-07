@@ -768,14 +768,12 @@
           this.searchEl.focus();
 
           await this.$nextTick();
-          const selectedOption = this.$refs.select.querySelector(
+          const selectedOption = this.$refs.dropdownMenu.querySelector(
             '.vs__dropdown-option--selected'
           );
 
           if (selectedOption) {
-            const dropdownPanel = this.$refs.select.querySelector(
-              '.vs__dropdown-menu'
-            );
+            const dropdownPanel = this.$refs.dropdownMenu.parentElement;
             const panelRect = dropdownPanel.getBoundingClientRect();
             const rect = selectedOption.getBoundingClientRect();
             dropdownPanel.scrollTop += rect.top - panelRect.top;

@@ -1,9 +1,15 @@
 <template>
   <div id="app">
-    {{ selected1 }}
+    {{ selected2 }}
     <div class="container">
       <v-select v-model="selected1" v-bind="config" />
-      <v-select v-model="selected2" v-bind="config" />
+      <v-select
+        v-model="selected2"
+        :options="config.options"
+        :label="'label'"
+        :value="'value'"
+        :append-to-body="true"
+      />
       <v-select v-model="selected3" v-bind="config2" />
     </div>
     <input type="text" />
