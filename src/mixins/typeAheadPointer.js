@@ -1,22 +1,52 @@
 export default {
   data() {
     return {
-      typeAheadPointer: -1
-    }
+      typeAheadPointer: -1,
+    };
   },
 
   watch: {
     filteredOptions() {
+      this.selectFirstValidOption();
+    },
+    dropdownOpen() {
+      this.selectCurrentOption();
+    },
+  },
+
+  mounted() {
+    this.selectCurrentOption();
+  },
+
+  methods: {
+    selectCurrentOption() {
+      let selected = false;
+      for (let i = 0; i < this.filteredOptions.length; i++) {
+        if (
+          this.selectable(this.filteredOptions[i]) &&
+          this.getOptionKey(this.value) ===
+            this.getOptionKey(this.filteredOptions[i])
+        ) {
+          this.typeAheadPointer = i;
+          selected = true;
+          break;
+        }
+      }
+
+      if (!selected) {
+        this.selectFirstValidOption();
+      }
+    },
+
+    selectFirstValidOption() {
       for (let i = 0; i < this.filteredOptions.length; i++) {
         if (this.selectable(this.filteredOptions[i])) {
           this.typeAheadPointer = i;
           break;
         }
       }
-    }
-  },
+    },
 
-  methods: {
     /**
      * Move the typeAheadPointer visually up the list by
      * setting it to the previous selectable option.
@@ -37,7 +67,11 @@ export default {
      * @return {void}
      */
     typeAheadDown() {
-      for (let i = this.typeAheadPointer + 1; i < this.filteredOptions.length; i++) {
+      for (
+        let i = this.typeAheadPointer + 1;
+        i < this.filteredOptions.length;
+        i++
+      ) {
         if (this.selectable(this.filteredOptions[i])) {
           this.typeAheadPointer = i;
           break;
@@ -56,6 +90,6 @@ export default {
       if (typeAheadOption) {
         this.select(typeAheadOption);
       }
-    }
-  }
-}
+    },
+  },
+};

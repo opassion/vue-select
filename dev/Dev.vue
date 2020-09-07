@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <v-select v-model="selected" v-bind="config" />
+    {{ selected1 }}
+    <div class="container">
+      <v-select v-model="selected1" v-bind="config" />
+      <v-select v-model="selected2" v-bind="config" />
+      <v-select v-model="selected3" v-bind="config2" />
+    </div>
+    <input type="text" />
   </div>
 </template>
 
@@ -12,11 +18,18 @@ import books from "../docs/.vuepress/data/books";
 export default {
   components: { vSelect },
   data: () => ({
-    selected: null,
+    selected1: null,
+    selected2: countries[3],
+    selected3: 4,
     config: {
-      options: countries
-    }
-  })
+      options: countries,
+      selectOnKeyCodes: [13, 9],
+    },
+    config2: {
+      options: [1, 2, 3, 4, 5, 6, 7],
+      selectOnKeyCodes: [13, 9],
+    },
+  }),
 };
 </script>
 
@@ -30,8 +43,15 @@ body {
 
 #app {
   height: 100%;
-  max-width: 20rem;
+  /* max-width: 20rem; */
   margin: 10rem auto 0;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 300px 300px;
+  align-items: center;
+  width: 100%;
 }
 
 hr {

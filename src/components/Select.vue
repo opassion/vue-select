@@ -742,7 +742,7 @@
        * @return {void}
        */
       async toggleDropdown (event) {
-        const targetIsNotSearch = event.target !== this.$refs.search;
+        const targetIsNotSearch = event && event.target !== this.$refs.search;
         if (targetIsNotSearch) {
           event.preventDefault();
         }
@@ -754,9 +754,11 @@
           ...([this.$refs['clearButton']] || []),
         ];
 
-        if (ignoredButtons.some(ref => ref.contains(event.target) || ref === event.target)) {
-          event.preventDefault();
-          return;
+        if (event) {
+          if (ignoredButtons.some(ref => ref.contains(event.target) || ref === event.target)) {
+            event.preventDefault();
+            return;
+          }
         }
 
         if (this.open && targetIsNotSearch) {
@@ -769,6 +771,7 @@
           const selectedOption = this.$refs.select.querySelector(
             '.vs__dropdown-option--selected'
           );
+
           if (selectedOption) {
             const dropdownPanel = this.$refs.select.querySelector(
               '.vs__dropdown-menu'
@@ -928,7 +931,7 @@
        * @return {void}
        */
       onSearchFocus() {
-        this.open = true
+        this.toggleDropdown()
         this.$emit('search:focus')
       },
 
