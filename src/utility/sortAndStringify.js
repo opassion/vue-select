@@ -3,6 +3,10 @@
  * @return {string}
  */
 function sortAndStringify(sortable) {
+  if (!sortable) {
+    return Math.random().toString()
+  }
+
   const ordered = {};
 
   Object.keys(sortable).sort().forEach(key => {

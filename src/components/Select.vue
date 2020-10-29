@@ -315,13 +315,9 @@
           }
 
           try {
-            return option.hasOwnProperty('id') ? option.id : sortAndStringify(option);
+            return option && option.hasOwnProperty('id') ? option.id : sortAndStringify(option);
           } catch (e) {
-            const warning = `[vue-select warn]: Could not stringify this option ` +
-              `to generate unique key. Please provide'getOptionKey' prop ` +
-              `to return a unique key for each option.\n` +
-              'https://vue-select.org/api/props.html#getoptionkey';
-            return console.warn(warning, option, e);
+            return console.warn('Failed to generate unique key:', option, e);
           }
         },
       },
