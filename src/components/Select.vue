@@ -65,7 +65,7 @@
             :class="{ 'vs__dropdown-option--selected': isOptionSelected(option), 'vs__dropdown-option--highlight': index === typeAheadPointer, 'vs__dropdown-option--disabled': !selectable(option) }"
             :aria-selected="index === typeAheadPointer ? true : null"
             @mouseover="selectable(option) ? typeAheadPointer = index : null"
-            @mousedown.prevent.stop="selectable(option) ? select(option) : null"
+            @mousedown.prevent.stop="handleOptionClicked(option); selectable(option) ? select(option) : null"
           >
             <slot name="option" v-bind="normalizeOptionForSlot(option)">
               {{ getOptionLabel(option) }}
@@ -640,6 +640,9 @@
     },
 
     methods: {
+      handleOptionClicked(option) {
+        this.$emit('option:clicked', option)
+      },
       /**
        * Make sure tracked value is
        * one option if possible.
