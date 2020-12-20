@@ -641,7 +641,7 @@
 
     methods: {
       handleOptionClicked(option) {
-        this.$emit('option:clicked', option)
+        this.$emit('option-clicked', option)
       },
       /**
        * Make sure tracked value is
